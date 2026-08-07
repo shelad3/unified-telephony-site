@@ -4,178 +4,568 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unified Telephony for Android</title>
-  <meta name="description" content="Unified Telephony — an all-in-one phone, SMS, and spam-screening app for Android. Download the latest APK here." />
+  <meta name="description" content="Unified Telephony — an all-in-one phone app for Android: calls, SMS, contacts, caller-ID, and spam screening. Download the latest APK, picked automatically for your phone." />
+  <meta property="og:title" content="Unified Telephony for Android" />
+  <meta property="og:description" content="An all-in-one phone app: calls, SMS, contacts, caller-ID, spam screening. Free, no ads." />
+  <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: #1e293b;
-      --panel-2: #273549;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
+      --bg: #0a0f1e;
+      --bg-2: #0d1428;
+      --panel: #111a2f;
+      --panel-2: #182238;
+      --text: #e6ecf8;
+      --muted: #93a3c4;
       --accent: #4f8cff;
-      --accent-dark: #2f6ae8;
+      --accent-2: #7a5cff;
+      --accent-3: #22d3ee;
       --good: #34d399;
-      --border: #334155;
+      --warn: #fbbf24;
+      --bad: #f87171;
+      --border: #233150;
+      --radius: 18px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(900px 500px at 12% -10%, rgba(79, 140, 255, 0.16), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, rgba(122, 92, 255, 0.13), transparent 60%),
+        radial-gradient(700px 500px at 50% 110%, rgba(34, 211, 238, 0.08), transparent 60%),
+        var(--bg);
+    }
+    a { color: inherit; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    /* header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 15, 30, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(35, 49, 80, 0.6);
+    }
+    nav.wrap {
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 24px;
+      gap: 24px;
+      height: 64px;
     }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      max-width: 480px;
-      width: 100%;
-      padding: 40px 32px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-      text-align: center;
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; text-decoration: none; }
+    .brand .logo {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; font-size: 15px; color: #fff;
     }
-    .logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      display: flex;
+    .nav-links { display: flex; gap: 22px; margin-left: auto; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.gh { padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; }
+
+    /* hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
       align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      font-weight: 800;
-      color: #fff;
-      margin: 0 auto 20px;
+      padding: 72px 24px 56px;
+      max-width: 1120px;
+      margin: 0 auto;
     }
-    h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-    .tagline { color: var(--muted); font-size: 15px; line-height: 1.5; margin-bottom: 28px; }
     .badge {
-      display: inline-block;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 24px;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 14px;
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      margin-bottom: 22px;
     }
-    .badge.live { border-color: var(--good); color: var(--good); }
-    .badge.offline { border-color: #f87171; color: #f87171; }
-    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
-    .meta div {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .meta .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-    .meta .v { font-size: 16px; font-weight: 700; }
-    .download {
-      display: block;
-      width: 100%;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      color: #fff;
-      border: none;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 17px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      text-decoration: none;
+    .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+    .badge.live .dot { background: var(--good); box-shadow: 0 0 10px var(--good); }
+    .badge.offline .dot { background: var(--bad); }
+    .hero h1 { font-size: clamp(34px, 5vw, 52px); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; }
+    .hero h1 .grad { background: linear-gradient(90deg, var(--accent), var(--accent-3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p.tagline { color: var(--muted); font-size: 17px; margin: 18px 0 28px; max-width: 540px; }
+    .cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      border: none; cursor: pointer; text-decoration: none; font-family: inherit;
+      font-weight: 700; border-radius: 14px; padding: 16px 28px; font-size: 16px;
       transition: transform 0.08s ease, filter 0.15s ease;
     }
-    .download:active { transform: scale(0.98); }
-    .download:hover { filter: brightness(1.08); }
-    .download:disabled { opacity: 0.6; cursor: not-allowed; }
-    .footnote { margin-top: 18px; font-size: 13px; color: var(--muted); }
-    .footnote a { color: var(--accent); text-decoration: none; }
-    .footnote a:hover { text-decoration: underline; }
-    .error { color: #f87171; font-size: 14px; margin-top: 16px; display: none; }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff; box-shadow: 0 12px 30px rgba(79, 140, 255, 0.35);
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-ghost { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { filter: brightness(1.15); }
+    .hero-stats { display: flex; gap: 28px; margin-top: 30px; }
+    .hero-stats .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .hero-stats .v { font-size: 18px; font-weight: 800; }
+    .hero-img {
+      position: relative;
+      width: min(300px, 78vw);
+      margin: 0 auto;
+    }
+    .phone {
+      border-radius: 34px;
+      border: 1px solid var(--border);
+      background: #0b1226;
+      padding: 10px;
+      box-shadow: var(--shadow), 0 0 0 6px rgba(35, 49, 80, 0.35);
+      position: relative;
+    }
+    .phone::before {
+      content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+      width: 84px; height: 22px; border-radius: 999px; background: #0b1226; z-index: 2;
+    }
+    .phone img { display: block; width: 100%; border-radius: 26px; }
+    .glow { position: absolute; inset: -30px -20px; z-index: -1; filter: blur(60px); opacity: 0.5;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent-3)); }
+
+    /* sections */
+    section { padding: 72px 24px; }
+    section > .wrap { max-width: 1120px; margin: 0 auto; }
+    .sec-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+    .sec-head h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; letter-spacing: -0.02em; }
+    .sec-head p { color: var(--muted); margin-top: 10px; font-size: 16px; }
+    .kicker { color: var(--accent-3); text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+
+    /* features */
+    .features {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    .feature {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 26px 24px; transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .feature:hover { transform: translateY(-4px); border-color: rgba(79, 140, 255, 0.5); }
+    .feature .ic {
+      width: 46px; height: 46px; border-radius: 13px;
+      background: linear-gradient(135deg, rgba(79, 140, 255, 0.2), rgba(122, 92, 255, 0.2));
+      border: 1px solid var(--border);
+      display: grid; place-items: center; margin-bottom: 16px;
+    }
+    .feature .ic svg { width: 22px; height: 22px; stroke: var(--accent-3); }
+    .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .feature p { font-size: 14px; color: var(--muted); }
+
+    /* screenshots */
+    .screenshots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 24px; justify-items: center; }
+    .shot { width: 100%; max-width: 220px; text-align: center; }
+    .shot .phone img { aspect-ratio: 420 / 935; object-fit: cover; }
+    .shot .cap { margin-top: 12px; font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    /* download */
+    #download .panel {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border); border-radius: 24px;
+      padding: 40px; max-width: 720px; margin: 0 auto;
+      box-shadow: var(--shadow);
+    }
+    .abi-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0 18px; }
+    .abi {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px; cursor: pointer; text-align: left;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      font-family: inherit; color: var(--text);
+    }
+    .abi:hover { border-color: rgba(79, 140, 255, 0.5); }
+    .abi.selected { border-color: var(--accent); background: rgba(79, 140, 255, 0.12); }
+    .abi .t { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .abi .rec { font-size: 10px; background: var(--good); color: #04231a; border-radius: 999px; padding: 2px 7px; font-weight: 800; }
+    .abi .h { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .dl-box { display: flex; flex-direction: column; gap: 14px; }
+    .dl-size { font-size: 14px; color: var(--muted); text-align: center; }
+    .howto { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; }
+    .howto h4 { font-size: 14px; margin-bottom: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .howto ol { padding-left: 20px; color: var(--muted); font-size: 14px; display: grid; gap: 6px; }
+    .note { font-size: 13px; color: var(--muted); margin-top: 16px; text-align: center; }
+
+    /* releases */
+    .rel-list { display: grid; gap: 16px; max-width: 860px; margin: 0 auto; }
+    .rel {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px;
+      display: grid; gap: 6px;
+    }
+    .rel.top { border-color: rgba(52, 211, 153, 0.45); }
+    .rel .r-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .rel .r-ver { font-size: 17px; font-weight: 800; }
+    .rel .tag { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: var(--good); color: #04231a; }
+    .rel .r-date { color: var(--muted); font-size: 13px; }
+    .rel .r-assets { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .asset {
+      display: inline-flex; flex-direction: column; gap: 1px;
+      text-decoration: none; background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 700;
+      transition: border-color 0.15s ease, transform 0.1s ease;
+    }
+    .asset:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .asset small { font-size: 11px; color: var(--muted); font-weight: 600; }
+    .err { color: var(--bad); font-size: 14px; text-align: center; display: none; }
+
+    /* footer */
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; }
+    .footer-row { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
+    .footer-row a { color: var(--accent); text-decoration: none; }
+    .footer-row a:hover { text-decoration: underline; }
+
+    @media (max-width: 880px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 44px; }
+      .hero p.tagline { margin-left: auto; margin-right: auto; }
+      .cta-row, .hero-stats { justify-content: center; }
+      .hero-img { order: -1; }
+      .features, .screenshots { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { gap: 14px; }
+      .nav-links a.gh span { display: none; }
+    }
+    @media (max-width: 560px) {
+      .features, .screenshots { grid-template-columns: 1fr; }
+      .abi-group { grid-template-columns: 1fr; }
+      .nav-links .hide-m { display: none; }
+    }
   </style>
 </head>
 <body>
-  <main class="card">
-    <div class="logo">UT</div>
-    <h1>Unified Telephony</h1>
-    <p class="tagline">An all-in-one phone app for Android: calls, SMS, caller-ID, and spam screening with themes you can customize.</p>
-    <span class="badge offline" id="status">Checking for updates&hellip;</span>
-    <div class="meta">
-      <div>
-        <div class="k">Latest version</div>
-        <div class="v" id="version">&ndash;</div>
+  <header>
+    <nav class="wrap">
+      <a class="brand" href="#top"><span class="logo">UT</span> Unified Telephony</a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#download">Download</a>
+        <a href="#releases">Releases</a>
+        <a class="gh" href="https://github.com/shelad3/unified-telephony" target="_blank" rel="noopener"><span>View source</span></a>
       </div>
-      <div>
-        <div class="k">APK size</div>
-        <div class="v" id="size">&ndash;</div>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <div>
+      <span class="badge offline" id="statusBadge"><span class="dot"></span><span id="statusText">Checking for updates&hellip;</span></span>
+      <h1>Your phone, <span class="grad">reimagined.</span></h1>
+      <p class="tagline">An all-in-one app for calls, SMS, contacts, caller-ID, and spam screening — with themes, app lock, focus modes, and dual-SIM support. Free, no ads, no tracking.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" id="dlBtn" href="https://github.com/shelad3/unified-telephony/releases/latest" rel="nofollow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download for Android
+        </a>
+        <a class="btn btn-ghost" href="#releases">All releases</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="k">Latest version</div><div class="v" id="heroVersion">&ndash;</div></div>
+        <div><div class="k">APK size</div><div class="v" id="heroSize">&ndash;</div></div>
+        <div><div class="k">Released</div><div class="v" id="heroDate">&ndash;</div></div>
       </div>
     </div>
-    <a class="download" id="downloadBtn" href="https://github.com/shelad3/unified-telephony/releases/latest/download/app-release.apk" rel="nofollow">Download APK</a>
-    <div class="footnote" id="footnote"></div>
-    <div class="error" id="error"></div>
-  </main>
+    <div class="hero-img">
+      <div class="glow"></div>
+      <div class="phone"><img id="heroShot" src="screenshots/screen-1.jpg" alt="Unified Telephony on Android" /></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Everything in one app</div>
+        <h2>Replace your dialer, SMS, and contacts</h2>
+        <p>Unified Telephony brings your phone together — calls, messages, contacts, and protection against spam.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <h3>Smart calls</h3>
+          <p>Dual-SIM dialing, in-app in-call UI, and best-effort call recording.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Messages</h3>
+          <p>Threaded SMS with automatic Personal, OTP, and Banking filters.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <h3>Contacts &amp; caller-ID</h3>
+          <p>Smart suggestions, search, and a rich contact profile and timeline.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3>Spam screening</h3>
+          <p>Community-driven spam database that blocks unwanted callers.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.4-.7 1.4-1.4 0-.4-.2-.8-.4-1.1-.3-.3-.4-.6-.4-.9 0-.8.7-1.4 1.5-1.4H16c3.3 0 6-2.7 6-6 0-4.7-4.5-9-10-9z"/></svg></div>
+          <h3>Themes</h3>
+          <p>Customizable live-backdrop UI that feels like yours.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>App lock</h3>
+          <p>Protect the app with fingerprint or a multi-digit PIN.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <h3>Focus modes</h3>
+          <p>Schedule quiet hours that activate automatically at set days and times.</p>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+          <h3>In-app updates</h3>
+          <p>Checks for new versions and installs them right from Settings — no sideloading tricks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Take a look</div>
+        <h2>Built for everyday use</h2>
+        <p>From calls to spam protection — everything stays fast, local, and private.</p>
+      </div>
+      <div class="screenshots">
+        <div class="shot"><div class="phone"><img src="screenshots/screen-1.jpg" alt="Unified Telephony screenshot 1" loading="lazy" /></div><div class="cap">App in action</div></div>
+        <div class="shot"><div class="phone"><img src="screenshots/screen-2.jpg" alt="Unified Telephony screenshot 2" loading="lazy" /></div><div class="cap">App in action</div></div>
+        <div class="shot"><div class="phone"><img src="screenshots/screen-3.jpg" alt="Unified Telephony screenshot 3" loading="lazy" /></div><div class="cap">App in action</div></div>
+        <div class="shot"><div class="phone"><img src="screenshots/screen-4.jpg" alt="Unified Telephony screenshot 4" loading="lazy" /></div><div class="cap">App in action</div></div>
+        <div class="shot"><div class="phone"><img src="screenshots/screen-5.jpg" alt="Unified Telephony screenshot 5" loading="lazy" /></div><div class="cap">App in action</div></div>
+        <div class="shot"><div class="phone"><img src="screenshots/screen-6.jpg" alt="Unified Telephony screenshot 6" loading="lazy" /></div><div class="cap">App in action</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Get it now</div>
+        <h2>Download the latest version</h2>
+        <p>Pick the build that matches your phone. <strong>Most phones (2020 and newer) use arm64.</strong> Not sure? Ask the in-app updater to fetch the right one automatically.</p>
+      </div>
+      <div class="panel">
+        <div class="abi-group" id="abiGroup"></div>
+        <div class="dl-box">
+          <a class="btn btn-primary" id="dlBtn2" href="https://github.com/shelad3/unified-telephony/releases/latest" rel="nofollow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span id="dlLabel">Download APK</span>
+          </a>
+          <div class="dl-size" id="dlMeta">&ndash;</div>
+          <div class="note">Prefer updating from inside the app? Open <strong>Settings &rarr; Check for updates</strong> — it downloads the correct build automatically.</div>
+        </div>
+        <div class="howto">
+          <h4>How to install</h4>
+          <ol>
+            <li>Download the APK to your phone (or open this page on your phone).</li>
+            <li>Tap the file when the download finishes.</li>
+            <li>If asked, allow your browser to install unknown apps, then confirm.</li>
+            <li>After the first install, set Unified Telephony as your phone/SMS app when prompted.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="releases">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Version history</div>
+        <h2>Every release, one place</h2>
+        <p>New versions are added automatically from GitHub. Always download from the newest release.</p>
+      </div>
+      <div class="err" id="relErr">Couldn&rsquo;t load release history — check <a href="https://github.com/shelad3/unified-telephony/releases" style="color:var(--accent)">GitHub releases</a> instead.</div>
+      <div class="rel-list" id="relList"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-row">
+      <span>&copy; <span id="year"></span> Unified Telephony</span>
+      <span>
+        <a href="https://github.com/shelad3/unified-telephony" target="_blank" rel="noopener">Source code</a>
+        &middot;
+        <a href="https://github.com/shelad3/unified-telephony/releases" target="_blank" rel="noopener">Releases</a>
+      </span>
+    </div>
+  </footer>
 
   <script>
     (function () {
-      var API = 'https://api.github.com/repos/shelad3/unified-telephony/releases/latest';
-      var btn = document.getElementById('downloadBtn');
-      var status = document.getElementById('status');
-      var version = document.getElementById('version');
-      var sizeEl = document.getElementById('size');
-      var footnote = document.getElementById('footnote');
-      var err = document.getElementById('error');
+      var REPO = 'shelad3/unified-telephony';
+      var API = 'https://api.github.com/repos/' + REPO + '/releases?per_page=100';
 
-      function formatBytes(bytes) {
-        if (!bytes && bytes !== 0) return '&ndash;';
-        var units = ['MB', 'GB'];
-        var mb = bytes / (1024 * 1024);
-        if (mb >= 1024) return (mb / 1024).toFixed(2) + ' GB';
-        return mb.toFixed(1) + ' MB';
+      var ABIS = [
+        { key: 'arm64-v8a', label: 'Most phones', hint: 'arm64 &middot; 2020+', rec: true },
+        { key: 'armeabi-v7a', label: 'Older phones', hint: '32-bit', rec: false },
+        { key: 'x86_64', label: 'Emulator', hint: 'x86_64', rec: false }
+      ];
+
+      var els = {
+        statusBadge: document.getElementById('statusBadge'),
+        statusText: document.getElementById('statusText'),
+        heroVersion: document.getElementById('heroVersion'),
+        heroSize: document.getElementById('heroSize'),
+        heroDate: document.getElementById('heroDate'),
+        heroShot: document.getElementById('heroShot'),
+        abiGroup: document.getElementById('abiGroup'),
+        dlBtn: document.getElementById('dlBtn'),
+        dlBtn2: document.getElementById('dlBtn2'),
+        dlLabel: document.getElementById('dlLabel'),
+        dlMeta: document.getElementById('dlMeta'),
+        relList: document.getElementById('relList'),
+        relErr: document.getElementById('relErr')
+      };
+
+      var state = { releases: [], abi: 'arm64-v8a' };
+
+      function fmtBytes(n) {
+        if (!n && n !== 0) return '&ndash;';
+        var mb = n / (1024 * 1024);
+        return (mb >= 1024 ? (mb / 1024).toFixed(2) + ' GB' : mb.toFixed(1) + ' MB');
       }
-
-      function formatDate(iso) {
+      function fmtDate(iso) {
         if (!iso) return '&ndash;';
         try {
-          return new Date(iso).toUTCString().replace(', 2026', ', 2026');
-        } catch (e) {
-          return '&ndash;';
+          return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (e) { return '&ndash;'; }
+      }
+      function assetFor(rel, abi) {
+        var assets = (rel.assets || []);
+        var fallback = null;
+        for (var i = 0; i < assets.length; i++) {
+          var name = (assets[i].name || '').toLowerCase();
+          if (!/\.apk$/.test(name)) continue;
+          if (!fallback) fallback = assets[i];
+          if (abi && name.indexOf(abi.toLowerCase()) !== -1) return assets[i];
+        }
+        return fallback;
+      }
+      function assetLabel(name) {
+        var n = (name || '').toLowerCase();
+        if (n.indexOf('arm64-v8a') !== -1) return 'arm64 &middot; most phones';
+        if (n.indexOf('armeabi-v7a') !== -1) return 'arm32 &middot; older phones';
+        if (n.indexOf('x86_64') !== -1) return 'x86_64 &middot; emulator';
+        return 'Universal APK';
+      }
+      function setStatus(live, text) {
+        els.statusBadge.className = 'badge ' + (live ? 'live' : 'offline');
+        els.statusText.textContent = text;
+      }
+
+      function renderAbiPicker() {
+        els.abiGroup.innerHTML = ABIS.map(function (a) {
+          return '<button type="button" class="abi' + (state.abi === a.key ? ' selected' : '') + '" data-abi="' + a.key + '">' +
+            '<div class="t">' + a.label + (a.rec ? ' <span class="rec">Recommended</span>' : '') + '</div>' +
+            '<div class="h">' + a.hint + '</div>' +
+          '</button>';
+        }).join('');
+        els.abiGroup.querySelectorAll('.abi').forEach(function (b) {
+          b.addEventListener('click', function () {
+            state.abi = b.getAttribute('data-abi');
+            renderAbiPicker();
+            renderDownload();
+          });
+        });
+      }
+
+      function renderDownload() {
+        var latest = state.releases[0];
+        if (!latest) return;
+        var asset = assetFor(latest, state.abi);
+        var url = asset ? asset.browser_download_url : 'https://github.com/' + REPO + '/releases/latest';
+        els.dlBtn.href = url;
+        els.dlBtn2.href = url;
+        var ver = 'v' + (latest.tag_name || 'latest').replace(/^v/i, '');
+        els.dlLabel.innerHTML = 'Download v' + ver + ' APK';
+        if (asset) {
+          els.dlMeta.innerHTML = assetLabel(asset.name) + ' &middot; ' + fmtBytes(asset.size) + ' &middot; released ' + fmtDate(latest.published_at);
+        } else {
+          els.dlMeta.innerHTML = 'No APK attached to this release yet.';
         }
       }
 
-      fetch(API)
-        .then(function (r) {
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          return r.json();
-        })
-        .then(function (rel) {
-          var name = rel.tag_name || rel.name || 'unknown';
-          var asset = (rel.assets || []).find(function (a) {
-            return /\.apk$/.test(a.name);
+      function renderReleases() {
+        els.relList.innerHTML = state.releases.map(function (rel, idx) {
+          var ver = (rel.tag_name || 'latest').replace(/^v/i, '');
+          var assets = (rel.assets || []).filter(function (a) { return /\.apk$/.test((a.name || '').toLowerCase()); });
+          var chips = assets.map(function (a) {
+            return '<a class="asset" href="' + a.browser_download_url + '" rel="nofollow" download>' + assetLabel(a.name) + '<small>' + fmtBytes(a.size) + '</small></a>';
+          }).join('');
+          if (!chips) chips = '<span class="note" style="margin:0">No APK assets on this release.</span>';
+          return '<div class="rel' + (idx === 0 ? ' top' : '') + '">' +
+            '<div class="r-head">' +
+              '<span class="r-ver">v' + ver + '</span>' +
+              (idx === 0 ? '<span class="tag">Latest</span>' : '') +
+              '<span class="r-date">' + fmtDate(rel.published_at) + '</span>' +
+            '</div>' +
+            '<div class="r-assets">' + chips + '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      function applyLatest() {
+        var latest = state.releases[0];
+        if (!latest) {
+          setStatus(false, 'Version unknown');
+          els.heroVersion.textContent = '&ndash;';
+          els.heroSize.textContent = '&ndash;';
+          els.heroDate.textContent = '&ndash;';
+          return;
+        }
+        var ver = 'v' + (latest.tag_name || '').replace(/^v/i, '');
+        var asset = assetFor(latest, state.abi);
+        setStatus(true, ver + ' is live');
+        els.heroVersion.textContent = ver;
+        els.heroSize.textContent = asset ? fmtBytes(asset.size) : '&ndash;';
+        els.heroDate.textContent = fmtDate(latest.published_at);
+        renderAbiPicker();
+        renderDownload();
+        renderReleases();
+      }
+
+      function init() {
+        document.getElementById('year').textContent = new Date().getFullYear();
+        fetch(API)
+          .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          })
+          .then(function (rels) {
+            if (!Array.isArray(rels) || rels.length === 0) throw new Error('empty');
+            state.releases = rels.sort(function (a, b) {
+              return new Date(b.published_at || 0) - new Date(a.published_at || 0);
+            });
+            applyLatest();
+          })
+          .catch(function (e) {
+            console.error(e);
+            setStatus(false, 'Version unknown right now');
+            els.heroVersion.textContent = '&ndash;';
+            els.heroSize.textContent = '&ndash;';
+            els.heroDate.textContent = '&ndash;';
+            els.relErr.style.display = 'block';
           });
-          status.textContent = 'v' + name;
-          status.className = 'badge live';
-          version.textContent = 'v' + name;
-          sizeEl.innerHTML = asset ? formatBytes(asset.size) : '&ndash;';
-          if (asset) {
-            btn.href = asset.browser_download_url;
-            footnote.innerHTML = 'Released ' + formatDate(rel.published_at) +
-              ' &middot; <a href="https://github.com/shelad3/unified-telephony" target="_blank" rel="noopener">Source code</a>';
-          }
-        })
-        .catch(function (e) {
-          status.textContent = 'Version unknown';
-          status.className = 'badge offline';
-          err.style.display = 'block';
-          err.textContent = 'Could not reach the update server right now. The download button still points to the latest release.';
-          console.error(e);
-        });
+      }
+
+      init();
     })();
   </script>
 </body>
